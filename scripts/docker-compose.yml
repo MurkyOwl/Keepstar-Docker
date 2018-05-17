@@ -3,8 +3,9 @@ version: "3.2"
 services:
 
     keepstar-php:
-        image: murkyowl/keepstar:latest
+        image: murkyowl/keepstar-php:latest
         container_name: keepstar-php
+        restart: always
         volumes:
         - type: bind
           source: ./config.php
@@ -12,13 +13,14 @@ services:
         networks:
             - keepstar-network
     keepstar-nginx:
-        image: nginx:latest
+        image: murkyowl/keepstar-nginx:latest
         container_name: keepstar-nginx
+        restart: always
         ports:
             - "8080:80"
         volumes:
-            # - Keepstar-code:/var/www/
-            - ./site.conf:/etc/nginx/conf.d/site.conf
+             - Keepstar-code:/var/www/Keepstar/
+        command: /bin/sh -c "nginx -g 'daemon off;'"
         links:
             - keepstar-php
         networks:
@@ -26,8 +28,8 @@ services:
 
 
 
-# volumes:
-#     Keepstar-code:
+volumes:
+     Keepstar-code:
 networks:
     keepstar-network:
 
