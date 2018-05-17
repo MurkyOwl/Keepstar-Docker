@@ -1,25 +1,34 @@
 version: "3.2"
 
 services:
+
+    keepstar-php:
+        image: murkyowl/keepstar:latest
+        container_name: keepstar-php
+        volumes:
+        - type: bind
+          source: ./config.php
+          target: /var/www/Keepstar/config/config.php
+        networks:
+            - keepstar-network
     keepstar-nginx:
         image: nginx:latest
         container_name: keepstar-nginx
         ports:
             - "8080:80"
         volumes:
-            - Keepstar-code:/var/www/
+            # - Keepstar-code:/var/www/
             - ./site.conf:/etc/nginx/conf.d/site.conf
         links:
             - keepstar-php
-    keepstar-php:
-        image: murkyowl:keepstar
-        container_name: keepstar-php
-        volumes:
-        - type: bind
-          source: ./config.php
-          target: /var/www/Keepstar/config/config.php
+        networks:
+            - keepstar-network
 
-volumes:
-    Keepstar-code:
+
+
+# volumes:
+#     Keepstar-code:
+networks:
+    keepstar-network:
 
 
