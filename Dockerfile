@@ -1,11 +1,7 @@
 FROM ubuntu:16.04
 
 RUN apt-get update
-RUN apt-get upgrade -y
 
-
-COPY debconf.selections /tmp/
-RUN debconf-set-selections /tmp/debconf.selections
 
 RUN apt-get install -y zip unzip
 RUN apt-get install -y \
@@ -14,6 +10,7 @@ RUN apt-get install -y \
 	php7.0-curl \
 	php7.0-sqlite3 \
 	cron 
+
 RUN apt-get install apache2 libapache2-mod-php7.0 -y
 RUN apt-get install git composer curl -y
 
@@ -42,5 +39,7 @@ ENV APACHE_DOCUMENT_ROOT /var/www/Keepstar/
 
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+RUN apachectl -k graceful
 
 
