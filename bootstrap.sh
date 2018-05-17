@@ -38,8 +38,16 @@ cd $KEEPSTAR_DOCKER_INSTALL
 
 echo "Grabbing dockerfile and config file"
 
-curl -L https://raw.githubusercontent.com/PLACEHOLDER -o $KEEPSTAR_DOCKER_INSTALL/Dockerfile
-curl -L https://raw.githubusercontent.com/PLACEHOLDER -o $KEEPSTAR_DOCKER_INSTALL/config.php
+curl -L https://raw.githubusercontent.com/MurkyOwl/Keepstar-Docker/master/Dockerfile -o $KEEPSTAR_DOCKER_INSTALL/Dockerfile
+curl -L https://raw.githubusercontent.com/MurkyOwl/Keepstar-Docker/master/config.php -o $KEEPSTAR_DOCKER_INSTALL/config.php
+
+echo "Please edit your config file in /opt/keepstar_docker/ before continuing, Yes when ready."
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) make install; break;;
+        No ) exit;;
+    esac
+done
 
 echo "Starting docker image.\n"
 docker build -t keepstar && docker run -p 4000:80 keepstar
