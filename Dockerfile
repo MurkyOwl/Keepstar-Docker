@@ -1,18 +1,14 @@
-FROM ubuntu:16.04
-
-RUN apt-get update
+FROM php:7.0-apache
 
 
-RUN apt-get install -y zip unzip
-RUN apt-get install -y \
-	php7.0 \
-	php7.0-xml \
-	php7.0-curl \
-	php7.0-sqlite3 \
-	cron 
+RUN docker-php-source extract \
+    # do important things \
+    docker-php-ext-install sqlite3 curl xml \
+    && docker-php-source delete
+RUN apt-get update &&\
+	apt-get install -y git-core cron
 
-RUN apt-get install apache2 libapache2-mod-php7.0 -y
-RUN apt-get install git composer curl -y
+
 
 RUN cd /var/www/ && git clone https://github.com/shibdib/Keepstar.git
     #Get Composer
@@ -35,11 +31,14 @@ EXPOSE 80
 WORKDIR /var/www/Keepstar
 
 #Change some Apache stuff
-ENV APACHE_DOCUMENT_ROOT /var/www/Keepstar/
+RUN cd /etc/apache2/sites-enabled/ && rm 000-default.conf && \
+	cd /var/www/ rmdir html 
+COPY keepstar.conf /etc/apache2/sites-enabled/keepstar.conf
 
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-RUN apachectl -k graceful
+
+
+
+RUN a2enmod rewrite && service apache2 restart
 
 
