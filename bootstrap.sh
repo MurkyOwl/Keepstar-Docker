@@ -56,7 +56,8 @@ curl -L https://raw.githubusercontent.com/MurkyOwl/Keepstar-Docker/master/.env -
         
 
 echo "pulling docker image.\n"
+cd $KEEPSTAR_DOCKER_INSTALL
 docker-compose pull
 
-echo "Images downloaded. edit your config files in in /opt/keepstar-docker then run 'docker-compose up -d' to run the containers, also run 'docker-compose logs --tail 5 -f' to view the logs"
+echo "Images downloaded. edit your config files in in /opt/keepstar_docker then run 'docker-compose up -d' to run the containers, also run 'docker-compose logs --tail 5 -f' to view the logs"
 
