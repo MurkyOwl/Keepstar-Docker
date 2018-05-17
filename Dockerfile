@@ -1,26 +1,20 @@
-FROM php:7.0-apache
+FROM fauria/lamp:latest
 
-RUN apk add --no-cache \
-    # Install OS level dependencies
-    git zip unzip curl \
+RUN apt-get install -y \
+	php7.0-xml \
+	cron 
 
-	# Install PHP dependencies
-    docker-php-ext-install pdo_sqlite curl xml && \
-
-    #cd to web dir and clone keepstar to it
-    cd /var/www/ && git clone https://github.com/shibdib/Keepstar.git && \
-
+RUN cd /var/www/ && git clone https://github.com/shibdib/Keepstar.git
     #Get Composer
-    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
-
-    #Composer install for dependencies
-    composer install &&\
-
+RUN cd /var/www/Keepstar/ composer install &&\
     #Change dir ownerships??
-    sudo chown -R www-data:www-data /var/www/Keepstar/ &&\
-
+    chown -R www-data:www-data /var/www/Keepstar/
     #Set up cron job for checking perms, 
-    crontab -u www-data -e && echo "0 */2 * * * php /var/www/Keepstar/cron.php" &&\
+# RUN    crontab -u www-data -e && echo "0 */2 * * * php /var/www/Keepstar/cron.php" > crontab.tmp
+RUN touch crontab.tmp \
+	&& echo '0 */2 * * * php /var/www/Keepstar/cron.php' > crontab.tmp \
+	&& crontab crontab.tmp \
+    && rm -rf crontab.tmp
 
 #set config file outside to config file inside,
 
