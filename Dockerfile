@@ -1,8 +1,21 @@
-FROM fauria/lamp:latest
+FROM ubuntu:16.04
 
+RUN apt-get update
+RUN apt-get upgrade -y
+
+
+COPY debconf.selections /tmp/
+RUN debconf-set-selections /tmp/debconf.selections
+
+RUN apt-get install -y zip unzip
 RUN apt-get install -y \
+	php7.0 \
 	php7.0-xml \
+	php7.0-curl \
+	php7.0-sqlite3 \
 	cron 
+RUN apt-get install apache2 libapache2-mod-php7.0 -y
+RUN apt-get install git composer curl -y
 
 RUN cd /var/www/ && git clone https://github.com/shibdib/Keepstar.git
     #Get Composer
@@ -20,6 +33,7 @@ RUN touch crontab.tmp \
 
 COPY config.php /var/www/keepstar/config/config.php
 
+EXPOSE 80
 
 WORKDIR /var/www/Keepstar
 
