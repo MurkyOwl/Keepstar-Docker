@@ -30,32 +30,33 @@ if ! [ -x "$(command -v docker)" ]; then
     echo "Docker installed"
 fi
 
+# Have docker-compose?
+if ! [ -x "$(command -v docker-compose)" ]; then
+
+    echo "docker-compose is not installed. Installing..."
+
+    curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+    chmod +x /usr/local/bin/docker-compose
+
+    echo "docker-compose installed"
+fi
+
 # Make sure /opt/keepstar_docker exists
 echo "Ensuring $KEEPSTAR_DOCKER_INSTALL is available..."
 mkdir -p $KEEPSTAR_DOCKER_INSTALL
 cd $KEEPSTAR_DOCKER_INSTALL
 
-if [ ! -f /root/.keepstar-installed ]; then
 
-        echo "Grabbing dockerfile and config file"
+echo "Grabbing dockerfile and config file"
 
-        curl -L https://raw.githubusercontent.com/MurkyOwl/Keepstar-Docker/master/Dockerfile -o $KEEPSTAR_DOCKER_INSTALL/Dockerfile
-        curl -L https://raw.githubusercontent.com/MurkyOwl/Keepstar-Docker/master/config.php -o $KEEPSTAR_DOCKER_INSTALL/config.php
-        curl -L https://raw.githubusercontent.com/MurkyOwl/Keepstar-Docker/master/keepstar.conf -o $KEEPSTAR_DOCKER_INSTALL/keepstar.conf
+curl -L https://raw.githubusercontent.com/MurkyOwl/Keepstar-Docker/master/docker-compose.yml -o $KEEPSTAR_DOCKER_INSTALL/Dockerfile
+curl -L https://raw.githubusercontent.com/MurkyOwl/Keepstar-Docker/master/config.php -o $KEEPSTAR_DOCKER_INSTALL/config.php
+curl -L https://raw.githubusercontent.com/MurkyOwl/Keepstar-Docker/master/.env -o $KEEPSTAR_DOCKER_INSTALL/.env
 
-        echo "Please edit your config files in /opt/keepstar_docker/ before continuing, Yes when ready."
-        select yn in "Yes" "No"; do
-            case $yn in
-                Yes ) make install; break;;
-                No ) exit;;
-            esac
-        done
-    Mark it as installed
-    touch /root/.keepstar-installed
-fi
+        
 
-echo "Starting docker image.\n"
-docker build -t murkyowl:keepstar . && docker run -d -p 80:80 murkyowl:keepstar 
+echo "pulling docker image.\n"
+docker-compose pull
 
+echo "Images downloaded. edit your config files in in /opt/keepstar-docker then run 'docker-compose up -d' to run the containers, also run 'docker-compose logs --tail 5 -f' to view the logs"
 
-echo "Docker has Started!"

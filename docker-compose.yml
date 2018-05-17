@@ -7,6 +7,7 @@ services:
         container_name: keepstar-php
         restart: always
         volumes:
+        - "Keepstar-code:/var/www/Keepstar/"
         - type: bind
           source: ./config.php
           target: /var/www/Keepstar/config/config.php
@@ -14,17 +15,20 @@ services:
             - keepstar-network
     keepstar-nginx:
         image: murkyowl/keepstar-nginx:latest
+        depends_on:
+            - keepstar-php
         container_name: keepstar-nginx
         restart: always
         ports:
-            - "8080:80"
+           - "${NGINX_HTTP}:80"
+           - "${NGINX_HTTPS}:443"
         volumes:
-             - Keepstar-code:/var/www/Keepstar/
-        command: /bin/sh -c "nginx -g 'daemon off;'"
+           - "Keepstar-code:/var/www/Keepstar/"
+        command: /bin/sh -c "envsubst '${NGINX_HOST}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
         links:
-            - keepstar-php
+           - keepstar-php
         networks:
-            - keepstar-network
+           - keepstar-network
 
 
 
