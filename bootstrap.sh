@@ -35,7 +35,7 @@ echo "Ensuring $KEEPSTAR_DOCKER_INSTALL is available..."
 mkdir -p $KEEPSTAR_DOCKER_INSTALL
 cd $KEEPSTAR_DOCKER_INSTALL
 
-    if [ ! -f /root/.keepstar-installed ]; then
+if [ ! -f /root/.keepstar-installed ]; then
 
         echo "Grabbing dockerfile and config file"
 
@@ -50,9 +50,9 @@ cd $KEEPSTAR_DOCKER_INSTALL
                 No ) exit;;
             esac
         done
-Mark it as installed
+    Mark it as installed
     touch /root/.keepstar-installed
-    fi
+fi
 
 echo "Starting docker image.\n"
 docker build -t murkyowl:keepstar . && docker run -d -p 80:80 murkyowl:keepstar 
