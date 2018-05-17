@@ -49,7 +49,7 @@ cd $KEEPSTAR_DOCKER_INSTALL
 
 echo "Grabbing dockerfile and config file"
 
-curl -L https://raw.githubusercontent.com/MurkyOwl/Keepstar-Docker/master/docker-compose.yml -o $KEEPSTAR_DOCKER_INSTALL/Dockerfile
+curl -L https://raw.githubusercontent.com/MurkyOwl/Keepstar-Docker/master/docker-compose.yml -o $KEEPSTAR_DOCKER_INSTALL/docker-compose.yml
 curl -L https://raw.githubusercontent.com/MurkyOwl/Keepstar-Docker/master/config.php -o $KEEPSTAR_DOCKER_INSTALL/config.php
 curl -L https://raw.githubusercontent.com/MurkyOwl/Keepstar-Docker/master/.env -o $KEEPSTAR_DOCKER_INSTALL/.env
 
