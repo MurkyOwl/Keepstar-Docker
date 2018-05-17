@@ -1,7 +1,7 @@
 # Keepstar Docker
 [Keepstar Discord Auth](https://github.com/shibdib/keepstar)
 
-not so neatly packaged in a docker, 
+not so neatly packaged in a docker-compose, 
 
 WIP
 
