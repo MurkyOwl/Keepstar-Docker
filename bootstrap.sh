@@ -39,11 +39,9 @@ cd $KEEPSTAR_DOCKER_INSTALL
 echo "Grabbing dockerfile and config file"
 
 curl -L https://raw.githubusercontent.com/PLACEHOLDER -o $KEEPSTAR_DOCKER_INSTALL/Dockerfile
-curl -L https://raw.githubusercontent.com/PLACEHOLDER -o $KEEPSTAR_DOCKER_INSTALL/configP
+curl -L https://raw.githubusercontent.com/PLACEHOLDER -o $KEEPSTAR_DOCKER_INSTALL/config.php
 
-echo "Starting docker stack. This will download the images too. Please wait...\n"
-docker-compose up -d
+echo "Starting docker image.\n"
+docker build -t keepstar && docker run -p 4000:80 keepstar
 
-echo "Images downloaded. The containers are now iniliatising. To check what is happening, run 'docker-compose logs --tail 5 -f' in /opt/keepstar_docker"
-
-echo "Done!"
+echo "Docker has Started!"
