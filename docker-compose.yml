@@ -34,6 +34,9 @@ services:
       container_name: keepstar-cron
       volumes:
         - "Keepstar-code:/var/www/Keepstar/"
+        - type: bind
+          source: ./config.php
+          target: /var/www/Keepstar/config/config.php
       depends_on:
         - keepstar-php
       networks:
