@@ -1,4 +1,4 @@
-# Keepstar Docker
+# Keepstar docker-compose
 [Keepstar Discord Auth](https://github.com/shibdib/keepstar)
 
 not so neatly packaged in a docker-compose, 
