@@ -29,6 +29,16 @@ services:
            - keepstar-php
         networks:
            - keepstar-network
+    keepstar-cron:
+      image: murkyowl/keepstar-cron:latest
+      container_name: keepstar-cron
+      volumes:
+        - "Keepstar-code:/var/www/Keepstar/"
+      depends_on:
+        - keepstar-php
+      networks:
+        - keepstar-network
+
 
 
 
