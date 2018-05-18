@@ -1,14 +1,16 @@
 <?php
-
 $config = [];
-
+// Auth
+$config['auth'] = [
+    'title' => 'EVE Online', // Alliance/Corp/Group Name
+    'admin' => 0 // The In-Game characterID of the admin
+];
 // CREST
 $config['sso'] = [
 	'clientID' => '', // https://developers.eveonline.com/
 	'secretKey' => '',
 	'callbackURL' => '', // Include trailing / (Will be the url_to_the_index.com/auth/)
 ];
-
 $config['discord'] = [
 	'botNick' => 'Keepstar', //Change the nickname of the auth bot here
 	'guildId' => 12345, //Get the guild ID for your discord server
@@ -24,7 +26,6 @@ $config['discord'] = [
 	'clientSecret' => '', //The bot must be a member of your server
 	'redirectUri' => '' //The bot must be a member of your server (same as SSO callbackURL)
 ];
-
 $config['groups'] = [
 	'group1' => [
 		'id' => ['1234'], // Corp/Alliance/Player ID/(PUTTING 1234 IS A CATCH ALL, IT WILL ASSIGN THAT ROLE TO EVERYONE)
@@ -35,14 +36,19 @@ $config['groups'] = [
 		'role' => '' //Role Name
 	],
 ];
-
+// Additional Modules
+$config['pings'] = [ // Send announcements to various discord channels
+    'enable' => false,
+    'pingChannel' => 0, // Channel ID that pings default to
+    'pingRole' => '', // Discord role that can send pings
+    'append' => '=== Ping Sent Via Keepstar Auth ===', // All pings will have this line added to the footer
+];
 // Site IGNORE EVERYTHING BELOW THIS LINE
 $config['site'] = [
 	'debug' => true,
 	'userAgent' => null, // Use pre-defined user agents
 	'apiRequestsPrMinute' => 1800,
 ];
-
 // Cookies
 $config['cookies'] = [
 	'name' => 'rena',
@@ -50,7 +56,6 @@ $config['cookies'] = [
 	'time' => 3600 * 24 * 30,
 	'secret' => '',
 ];
-
 // Slim
 $config['slim'] = [
 	'mode' => $config['site']['debug'] ? 'development' : 'production',
@@ -58,7 +63,6 @@ $config['slim'] = [
 	'cookies.secret_key' => $config['cookies']['secret'],
 	'templates.path' => BASEDIR . '/view/',
 ];
-
 //DO NOT USE THIS YET
 $config['firetail'] = [// Only change this section if you're linking to a local install of firetail
 	'active' => false, //Set to true if you have a local install of firetail and want to link it with keepstar
