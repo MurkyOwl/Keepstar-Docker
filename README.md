@@ -41,4 +41,6 @@ server {
 }
 ````
 
+if you have multiple docker based web instances edit the `proxy_pass http://127.0.0.1:8080` to whatever you have your port set to. do this per docker based site.
+
 Certificates should be managed using `certbot` which you can read more about [here](https://letsencrypt.org/getting-started/).
